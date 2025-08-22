@@ -1,24 +1,24 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from 'react'
 
 interface ThemeType {
-  primaryColor: string;
-  backgroundColor: string;
-  accentColor: string;
+  primaryColor: string
+  backgroundColor: string
+  accentColor: string
 }
 interface DataTableType {
-  datas: Array<Array<string>>;
-  tableHeaders: Array<string>;
-  tableTitle?: string;
-  theme?: ThemeType;
+  datas: Array<Array<string>>
+  tableHeaders: Array<string>
+  tableTitle?: string
+  theme?: ThemeType
 }
 
 const defaultTheme = {
-  primaryColor: "#000000",
-  backgroundColor: "#bfcedd",
-  accentColor: "#3c56e7",
-};
+  primaryColor: '#000000',
+  backgroundColor: '#bfcedd',
+  accentColor: '#3c56e7',
+}
 
-const OPTIONS_VALUES = [10, 25, 50, 100];
+const OPTIONS_VALUES = [10, 25, 50, 100]
 
 /**
  * Généric table.
@@ -38,38 +38,31 @@ const OPTIONS_VALUES = [10, 25, 50, 100];
  * @param {string} props.theme.accentColor - active buttons and underline
  * @retrun {ReactElement}
  */
-export function DataTable({
-  datas,
-  tableHeaders,
-  tableTitle,
-  theme,
-}: DataTableType) {
-  const [sortedDatas, setSortedDatas] = useState<Array<Array<string>>>([]);
-  const [displayedDatas, setDisplayedDatas] = useState<Array<Array<string>>>(
-    [],
-  );
-  const [itemPerPage, setItemPerPage] = useState<number>(10);
-  const [isSorted, setIsSorted] = useState<boolean[]>([]);
-  const [PagesButtons, setPagesButtons] = useState<Array<number>>([]);
-  const [activePage, setActivePage] = useState<number>(1);
-  const [numberOfEntries, setnumberOfEntries] = useState<number>(0);
+export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableType) {
+  const [sortedDatas, setSortedDatas] = useState<Array<Array<string>>>([])
+  const [displayedDatas, setDisplayedDatas] = useState<Array<Array<string>>>([])
+  const [itemPerPage, setItemPerPage] = useState<number>(10)
+  const [isSorted, setIsSorted] = useState<boolean[]>([])
+  const [PagesButtons, setPagesButtons] = useState<Array<number>>([])
+  const [activePage, setActivePage] = useState<number>(1)
+  const [numberOfEntries, setnumberOfEntries] = useState<number>(0)
 
-  const finalTheme = { ...defaultTheme, ...theme };
+  const finalTheme = { ...defaultTheme, ...theme }
   const styleVariables: React.CSSProperties = {
-    "--table-primary": finalTheme.primaryColor,
-    "--table-background": finalTheme.backgroundColor,
-    "--table-accent": finalTheme.accentColor,
-  };
+    '--table-primary': finalTheme.primaryColor,
+    '--table-background': finalTheme.backgroundColor,
+    '--table-accent': finalTheme.accentColor,
+  }
 
   /**
    * This useEffect check datas changes.
    * Then sortedDatas, numberOfEntries and isSorted are initialized.
    */
   useEffect(() => {
-    setSortedDatas(datas);
-    setnumberOfEntries(datas.length);
-    setIsSorted(new Array(tableHeaders.length).fill(false));
-  }, [datas, tableHeaders.length]);
+    setSortedDatas(datas)
+    setnumberOfEntries(datas.length)
+    setIsSorted(new Array(tableHeaders.length).fill(false))
+  }, [datas, tableHeaders.length])
 
   /**
    * This useEffect checks if sortedDatas change.
@@ -83,15 +76,10 @@ export function DataTable({
    * It can happen when user choose a number par page in select options.
    */
   useEffect(() => {
-    setDisplayedDatas(
-      sortedDatas.slice(
-        (activePage - 1) * itemPerPage,
-        itemPerPage * activePage,
-      ),
-    );
-    const nbPages = Math.ceil(numberOfEntries / itemPerPage);
-    setPagesButtons(Array.from({ length: nbPages }, (_, index) => index + 1));
-  }, [sortedDatas, itemPerPage, activePage]);
+    setDisplayedDatas(sortedDatas.slice((activePage - 1) * itemPerPage, itemPerPage * activePage))
+    const nbPages = Math.ceil(numberOfEntries / itemPerPage)
+    setPagesButtons(Array.from({ length: nbPages }, (_, index) => index + 1))
+  }, [sortedDatas, itemPerPage, activePage])
 
   /**
    * This use effect checks if numberOfEntries
@@ -99,9 +87,9 @@ export function DataTable({
    * It can happen when use filter employees.
    */
   useEffect(() => {
-    const nbPages = Math.ceil(numberOfEntries / itemPerPage);
-    setPagesButtons(Array.from({ length: nbPages }, (_, index) => index + 1));
-  }, [numberOfEntries]);
+    const nbPages = Math.ceil(numberOfEntries / itemPerPage)
+    setPagesButtons(Array.from({ length: nbPages }, (_, index) => index + 1))
+  }, [numberOfEntries])
 
   /**
    * Employee sorting.
@@ -117,30 +105,24 @@ export function DataTable({
    * @param index tableHeaders index
    */
   function handleSort(index: number) {
-    if (tableHeaders[index].toLowerCase().includes("date")) {
+    if (tableHeaders[index].toLowerCase().includes('date')) {
       const sorted = [...sortedDatas].sort((a, b) => {
         return isSorted[index]
           ? new Date(a[index]).getTime() - new Date(b[index]).getTime()
-          : new Date(b[index]).getTime() - new Date(a[index]).getTime();
-      });
-      setSortedDatas(sorted);
-      setDisplayedDatas(
-        sorted.slice((activePage - 1) * itemPerPage, itemPerPage * activePage),
-      );
+          : new Date(b[index]).getTime() - new Date(a[index]).getTime()
+      })
+      setSortedDatas(sorted)
+      setDisplayedDatas(sorted.slice((activePage - 1) * itemPerPage, itemPerPage * activePage))
     } else {
       const sorted = [...sortedDatas].sort(function (a, b) {
-        return isSorted[index]
-          ? a[index].localeCompare(b[index])
-          : b[index].localeCompare(a[index]);
-      });
-      setSortedDatas(sorted);
-      setDisplayedDatas(
-        sorted.slice((activePage - 1) * itemPerPage, itemPerPage * activePage),
-      );
+        return isSorted[index] ? a[index].localeCompare(b[index]) : b[index].localeCompare(a[index])
+      })
+      setSortedDatas(sorted)
+      setDisplayedDatas(sorted.slice((activePage - 1) * itemPerPage, itemPerPage * activePage))
     }
-    const newIsSorted = [...isSorted];
-    newIsSorted[index] = !newIsSorted[index];
-    setIsSorted(newIsSorted);
+    const newIsSorted = [...isSorted]
+    newIsSorted[index] = !newIsSorted[index]
+    setIsSorted(newIsSorted)
   }
 
   /**
@@ -151,28 +133,20 @@ export function DataTable({
    * Sorting datas are preserved.
    */
   function handleFilter() {
-    const input = document.querySelector("input");
+    const input = document.querySelector('input')
     if (input && input?.value.length > 0) {
       const newEmployeeList = sortedDatas.filter((data) =>
         data
           .map((item) => item.toLowerCase().includes(input.value.toLowerCase()))
-          .reduce((acc, bool) => acc || bool),
-      );
-      setnumberOfEntries(newEmployeeList.length);
+          .reduce((acc, bool) => acc || bool)
+      )
+      setnumberOfEntries(newEmployeeList.length)
       setDisplayedDatas(
-        newEmployeeList.slice(
-          (activePage - 1) * itemPerPage,
-          itemPerPage * activePage,
-        ),
-      );
+        newEmployeeList.slice((activePage - 1) * itemPerPage, itemPerPage * activePage)
+      )
     } else {
-      setnumberOfEntries(sortedDatas.length);
-      setDisplayedDatas(
-        sortedDatas.slice(
-          (activePage - 1) * itemPerPage,
-          itemPerPage * activePage,
-        ),
-      );
+      setnumberOfEntries(sortedDatas.length)
+      setDisplayedDatas(sortedDatas.slice((activePage - 1) * itemPerPage, itemPerPage * activePage))
     }
   }
 
@@ -181,8 +155,8 @@ export function DataTable({
  per page
    */
   function toggleOptions() {
-    const options = document.querySelector(".options");
-    options?.classList.toggle("show-options");
+    const options = document.querySelector('.options')
+    options?.classList.toggle('show-options')
   }
 
   /**
@@ -190,13 +164,13 @@ export function DataTable({
    * @param {MouseEvent<HTMLDivElement>} event
    */
   function handleSelect(event: MouseEvent<HTMLDivElement>) {
-    const optionValue = event.currentTarget.innerText;
-    const selectValue = document.getElementById("select-value");
+    const optionValue = event.currentTarget.innerText
+    const selectValue = document.getElementById('select-value')
     if (selectValue) {
-      selectValue.innerText = optionValue;
-      setItemPerPage(Number(optionValue));
+      selectValue.innerText = optionValue
+      setItemPerPage(Number(optionValue))
     }
-    toggleOptions();
+    toggleOptions()
   }
 
   /**
@@ -204,8 +178,8 @@ export function DataTable({
    * @param event
    */
   function handleChangePage(event: MouseEvent<HTMLButtonElement>) {
-    const currentPageButton = event.currentTarget;
-    setActivePage(Number(currentPageButton.innerText));
+    const currentPageButton = event.currentTarget
+    setActivePage(Number(currentPageButton.innerText))
   }
 
   /**
@@ -213,11 +187,10 @@ export function DataTable({
    */
   function handlePreviousPage() {
     if (activePage > 1) {
-      setActivePage(activePage - 1);
+      setActivePage(activePage - 1)
     } else {
-      setActivePage(1);
+      setActivePage(1)
     }
-    console.log(activePage);
   }
 
   /**
@@ -225,43 +198,44 @@ export function DataTable({
    */
   function handleNextPage() {
     const maxPage = PagesButtons.reduce((accumulator, currentValue) =>
-      Math.max(accumulator, currentValue),
-    );
+      Math.max(accumulator, currentValue)
+    )
     if (activePage < maxPage) {
-      setActivePage(activePage + 1);
+      setActivePage(activePage + 1)
     } else {
-      setActivePage(maxPage);
+      setActivePage(maxPage)
     }
-    console.log(activePage);
   }
 
   if (!datas || !tableHeaders) {
-    return <div>Données maquantes</div>;
-  } else if (
-    !datas
-      .map((entries) => entries.length)
-      .every((x) => x === tableHeaders.length)
-  ) {
-    return <div>Données invalides</div>;
+    return <div>Données maquantes</div>
+  } else if (!datas.map((entries) => entries.length).every((x) => x === tableHeaders.length)) {
+    return <div>Données invalides</div>
   } else {
     return (
       <>
-        <section className="data-table" style={styleVariables}>
-          {tableTitle ? <h2 className="title">{tableTitle}</h2> : ""}
-          <div className="tools">
-            <div className="pagination">
+        <section
+          className='data-table'
+          style={styleVariables}
+        >
+          {tableTitle ? <h2 className='title'>{tableTitle}</h2> : ''}
+          <div className='tools'>
+            <div className='pagination'>
               <div>Show</div>
 
-              <div className="select">
-                <div className="value" onClick={() => toggleOptions()}>
-                  <p id="select-value">10</p>
-                  <i className="fa fa-chevron-down"></i>
+              <div className='select'>
+                <div
+                  className='value'
+                  onClick={() => toggleOptions()}
+                >
+                  <p id='select-value'>10</p>
+                  <i className='fa fa-chevron-down'></i>
                 </div>
-                <div className="options">
+                <div className='options'>
                   {OPTIONS_VALUES.map((value) => (
                     <div
                       key={value}
-                      className="option"
+                      className='option'
                       onClick={(event) => handleSelect(event)}
                     >
                       {value}
@@ -272,12 +246,12 @@ export function DataTable({
 
               <div>entries</div>
             </div>
-            <div className="filter">
-              <label className="">Search: </label>
+            <div className='filter'>
+              <label className=''>Search: </label>
               <input
-                type="text"
-                placeholder="filter"
-                name="filter"
+                type='text'
+                placeholder='filter'
+                name='filter'
                 onChange={() => handleFilter()}
               />
             </div>
@@ -287,9 +261,9 @@ export function DataTable({
               <tr>
                 {tableHeaders?.map((header, index) => (
                   <th key={index}>
-                    {header}{" "}
+                    {header}{' '}
                     <i
-                      className="fa fa-sort"
+                      className='fa fa-sort'
                       onClick={() => handleSort(index)}
                     ></i>
                   </th>
@@ -298,7 +272,10 @@ export function DataTable({
             </thead>
             <tbody>
               {displayedDatas.map((row, index) => (
-                <tr key={index} className="row">
+                <tr
+                  key={index}
+                  className='row'
+                >
                   {row.map((item, index) => (
                     <td key={index}>{item}</td>
                   ))}
@@ -306,57 +283,52 @@ export function DataTable({
               ))}
             </tbody>
           </table>
-          <div className="tools">
+          <div className='tools'>
             <p>
-              Showing {(activePage - 1) * itemPerPage + 1} to{" "}
-              {Math.min(itemPerPage * activePage, numberOfEntries)} of{" "}
-              {numberOfEntries} entries
+              Showing {(activePage - 1) * itemPerPage + 1} to{' '}
+              {Math.min(itemPerPage * activePage, numberOfEntries)} of {numberOfEntries} entries
             </p>
-            <div className="pages-navigation">
+            <div className='pages-navigation'>
               <i
-                className="fa fa-backward-fast"
+                className='fa fa-backward-fast'
                 onClick={() => setActivePage(1)}
-                title="First"
+                title='First'
               ></i>
               <i
-                className="fa fa-backward-step"
+                className='fa fa-backward-step'
                 onClick={() => handlePreviousPage()}
-                title="Previous"
+                title='Previous'
               ></i>
               {PagesButtons.map((num) => (
                 <button
                   key={num}
                   name={String(num)}
-                  className={
-                    activePage === num
-                      ? "page-button page-button_active"
-                      : "page-button"
-                  }
+                  className={activePage === num ? 'page-button page-button__active' : 'page-button'}
                   onClick={(event) => handleChangePage(event)}
                 >
                   {num}
                 </button>
               ))}
               <i
-                className="fa fa-forward-step"
+                className='fa fa-forward-step'
                 onClick={() => handleNextPage()}
-                title="Next"
+                title='Next'
               ></i>
               <i
-                className="fa fa-forward-fast"
+                className='fa fa-forward-fast'
                 onClick={() =>
                   setActivePage(
                     PagesButtons.reduce((accumulator, currentValue) =>
-                      Math.max(accumulator, currentValue),
-                    ),
+                      Math.max(accumulator, currentValue)
+                    )
                   )
                 }
-                title="Last"
+                title='Last'
               ></i>
             </div>
           </div>
         </section>
       </>
-    );
+    )
   }
 }
