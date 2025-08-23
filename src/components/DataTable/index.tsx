@@ -1,4 +1,15 @@
 import { useEffect, useState, type MouseEvent } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChevronDown,
+  faSort,
+  faBackwardFast,
+  faBackwardStep,
+  faForwardFast,
+  faForwardStep,
+} from '@fortawesome/free-solid-svg-icons'
+import clsx from 'clsx'
+import styles from './styles.module.css'
 
 interface ThemeType {
   primaryColor: string
@@ -21,13 +32,14 @@ const defaultTheme = {
 const OPTIONS_VALUES = [10, 25, 50, 100]
 
 /**
- * Généric table.
+ * # React-Data-Table component
+ * ### Généric table for data array.
  * Entries length must all be the same,
- * and tableHeaders length must ne equal to entries length.
+ * and tableHeaders length must be equal to entries length.
  * User can:
- *    filter entries,
- *    sort entries by each table column
- *    choose number of entries per pages
+ *    -filter entries,
+ *    -sort entries by each table column
+ *    -schoose number of entries per pages
  * @param {DataTableType} props - component props
  * @param {Array<Array<string>>} props.datas - array of table entries. Each entrie is an array
  * @param {Array<string>} props.tableHeaders - array of table head titles
@@ -37,6 +49,23 @@ const OPTIONS_VALUES = [10, 25, 50, 100]
  * @param {string} props.theme.backgroundColor - background for alternates rows and page buttons
  * @param {string} props.theme.accentColor - active buttons and underline
  * @retrun {ReactElement}
+ *
+ * ### Usage
+ *
+ * ```jsx
+ *
+ * const employeeList = [["Marianne", "Durand"], ["Jean", "Dupont"]]
+ * const headersList = ["First Name", "Last Name"]
+ * const theme = {primaryColor: '#000000', backgroundColor: '#bfcedd', accentColor: '#3c56e7'}
+ *
+ * <DataTable
+ *    datas={employeesList}
+ *    tableHeaders={headersList}
+ *    title="Table title"
+ *    theme={theme}
+ * />
+ *
+ * ```
  */
 export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableType) {
   const [sortedDatas, setSortedDatas] = useState<Array<Array<string>>>([])
@@ -46,6 +75,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
   const [PagesButtons, setPagesButtons] = useState<Array<number>>([])
   const [activePage, setActivePage] = useState<number>(1)
   const [numberOfEntries, setnumberOfEntries] = useState<number>(0)
+  const [showOptions, setShowOptions] = useState<boolean>(false)
 
   const finalTheme = { ...defaultTheme, ...theme }
   const styleVariables: React.CSSProperties = {
@@ -82,8 +112,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
   }, [sortedDatas, itemPerPage, activePage])
 
   /**
-   * This use effect checks if numberOfEntries
- changes.
+   * This use effect checks if numberOfEntries changes.
    * It can happen when use filter employees.
    */
   useEffect(() => {
@@ -128,8 +157,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
   /**
    * Employee filtering.
    * When user add characters in filter input new data list is created
-   * and then number of entries
- and displayed list are updated.
+   * and then number of entries and displayed list are updated.
    * Sorting datas are preserved.
    */
   function handleFilter() {
@@ -151,12 +179,10 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
   }
 
   /**
-   * Show select button options to choose number of entries
- per page
+   * Show select button options to choose number of entries per page
    */
   function toggleOptions() {
-    const options = document.querySelector('.options')
-    options?.classList.toggle('show-options')
+    setShowOptions(!showOptions)
   }
 
   /**
@@ -165,12 +191,8 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
    */
   function handleSelect(event: MouseEvent<HTMLDivElement>) {
     const optionValue = event.currentTarget.innerText
-    const selectValue = document.getElementById('select-value')
-    if (selectValue) {
-      selectValue.innerText = optionValue
-      setItemPerPage(Number(optionValue))
-    }
-    toggleOptions()
+    setItemPerPage(Number(optionValue))
+    setShowOptions(false)
   }
 
   /**
@@ -215,27 +237,31 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
     return (
       <>
         <section
-          className='data-table'
+          className={styles['data-table']}
           style={styleVariables}
         >
-          {tableTitle ? <h2 className='title'>{tableTitle}</h2> : ''}
-          <div className='tools'>
-            <div className='pagination'>
+          {tableTitle && <h2 className={styles.title}>{tableTitle}</h2>}
+
+          <div className={styles.tools}>
+            <div className={styles.pagination}>
               <div>Show</div>
 
-              <div className='select'>
+              <div className={styles.select}>
                 <div
-                  className='value'
-                  onClick={() => toggleOptions()}
+                  className={styles.value}
+                  onClick={toggleOptions}
                 >
-                  <p id='select-value'>10</p>
-                  <i className='fa fa-chevron-down'></i>
+                  <p>{itemPerPage}</p>
+                  <FontAwesomeIcon
+                    icon={faChevronDown}
+                    className={styles.fa}
+                  />
                 </div>
-                <div className='options'>
+                <div className={clsx(styles.options, { [styles['show-options']]: showOptions })}>
                   {OPTIONS_VALUES.map((value) => (
                     <div
                       key={value}
-                      className='option'
+                      className={styles.option}
                       onClick={(event) => handleSelect(event)}
                     >
                       {value}
@@ -246,8 +272,9 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
 
               <div>entries</div>
             </div>
-            <div className='filter'>
-              <label className=''>Search: </label>
+
+            <div className={styles.filter}>
+              <label>Search: </label>
               <input
                 type='text'
                 placeholder='filter'
@@ -256,16 +283,18 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
               />
             </div>
           </div>
+
           <table>
             <thead>
               <tr>
                 {tableHeaders?.map((header, index) => (
                   <th key={index}>
                     {header}{' '}
-                    <i
-                      className='fa fa-sort'
+                    <FontAwesomeIcon
+                      icon={faSort}
+                      className={styles.fa}
                       onClick={() => handleSort(index)}
-                    ></i>
+                    />
                   </th>
                 ))}
               </tr>
@@ -274,48 +303,56 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
               {displayedDatas.map((row, index) => (
                 <tr
                   key={index}
-                  className='row'
+                  className={styles.row}
                 >
-                  {row.map((item, index) => (
-                    <td key={index}>{item}</td>
+                  {row.map((item, itemIndex) => (
+                    <td key={itemIndex}>{item}</td>
                   ))}
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className='tools'>
+
+          <div className={styles.tools}>
             <p>
               Showing {(activePage - 1) * itemPerPage + 1} to{' '}
               {Math.min(itemPerPage * activePage, numberOfEntries)} of {numberOfEntries} entries
             </p>
-            <div className='pages-navigation'>
-              <i
-                className='fa fa-backward-fast'
+
+            <div className={styles['pages-navigation']}>
+              <FontAwesomeIcon
+                icon={faBackwardFast}
+                className={styles.fa}
                 onClick={() => setActivePage(1)}
                 title='First'
-              ></i>
-              <i
-                className='fa fa-backward-step'
-                onClick={() => handlePreviousPage()}
+              />
+              <FontAwesomeIcon
+                icon={faBackwardStep}
+                className={styles.fa}
+                onClick={handlePreviousPage}
                 title='Previous'
-              ></i>
+              />
               {PagesButtons.map((num) => (
                 <button
                   key={num}
                   name={String(num)}
-                  className={activePage === num ? 'page-button page-button__active' : 'page-button'}
-                  onClick={(event) => handleChangePage(event)}
+                  className={clsx(styles['page-button'], {
+                    [styles['page-button__active']]: activePage === num,
+                  })}
+                  onClick={handleChangePage}
                 >
                   {num}
                 </button>
               ))}
-              <i
-                className='fa fa-forward-step'
-                onClick={() => handleNextPage()}
+              <FontAwesomeIcon
+                icon={faForwardStep}
+                className={styles.fa}
+                onClick={handleNextPage}
                 title='Next'
-              ></i>
-              <i
-                className='fa fa-forward-fast'
+              />
+              <FontAwesomeIcon
+                icon={faForwardFast}
+                className={styles.fa}
                 onClick={() =>
                   setActivePage(
                     PagesButtons.reduce((accumulator, currentValue) =>
@@ -324,7 +361,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                   )
                 }
                 title='Last'
-              ></i>
+              />
             </div>
           </div>
         </section>

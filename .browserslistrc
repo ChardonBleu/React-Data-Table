@@ -1,0 +1,22 @@
+
+# Configuration conservative pour un composant externe
+# Couvre la majorité des cas d'usage professionnels
+
+defaults
+> 0.5%
+last 2 versions
+not dead
+
+# Exclusions spécifiques
+not IE 11
+not op_mini all
+
+# Support mobile important pour les tableaux
+iOS >= 12
+Android >= 6
+
+# Support navigateurs enterprise
+Edge >= 79
+Chrome >= 80
+Firefox >= 78
+Safari >= 13
