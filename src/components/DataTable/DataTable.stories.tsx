@@ -5,7 +5,7 @@ const meta = {
   title: 'Components/DataTable',
   component: DataTable,
   parameters: {
-    layout: 'fullscreen',
+    layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {
@@ -81,5 +81,15 @@ export const LargeDataset: Story = {
     datas: sampleData,
     tableHeaders: headers,
     tableTitle: 'Large Dataset Example',
+  },
+}
+
+export const MinimalData: Story = {
+  args: {
+    datas: [
+      ['Marianne', 'Durand'],
+      ['Jean', 'Dupont'],
+    ],
+    tableHeaders: ['First Name', 'Last Name'],
   },
 }
