@@ -8,7 +8,7 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 import storybook from 'eslint-plugin-storybook'
 
 export default tseslint.config(
-  { ignores: ['dist', '.storybook'] },
+  { ignores: ['dist', '.storybook', 'storybook-static', 'coverage'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, eslintConfigPrettier],
     files: ['**/*.{ts,tsx}'],

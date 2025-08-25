@@ -49,5 +49,17 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text-summary', 'html'],
+      enabled: true,
+      include: ['src/components/DataTable/index.tsx'],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
+    },
   },
 })

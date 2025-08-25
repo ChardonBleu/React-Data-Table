@@ -9,12 +9,12 @@
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "fmt": "prettier --check .",
     "fmt:fix": "prettier --write .",
-    "stylelint": "stylelint **/*.css",
+    "stylelint": "stylelint 'src/**/*.{css,scss,sass}'",
     "stylelint:fix": "stylelint **/*.css --fix",
-    "lfs": "eslint . --ext ts,tsx --fix && prettier --check . && stylelint **/*.css --fix",
+    "lfs": "eslint . --ext ts,tsx --fix && prettier --check . && stylelint 'src/**/*.{css,scss,sass}' --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest"
+    "test": "vitest --ui --coverage"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
@@ -41,6 +41,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/browser": "^3.2.4",
     "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",

@@ -27,3 +27,6 @@ coco.sh
 
 *storybook.log
 storybook-static
+
+coverage
+coverage*
