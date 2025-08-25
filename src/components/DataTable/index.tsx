@@ -19,7 +19,7 @@ interface ThemeType {
 interface DataTableType {
   datas: Array<Array<string>>
   tableHeaders: Array<string>
-  tableTitle?: string
+  title?: string
   theme?: ThemeType
 }
 
@@ -67,7 +67,7 @@ const OPTIONS_VALUES = [10, 25, 50, 100]
  *
  * ```
  */
-export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableType) {
+export function DataTable({ datas, tableHeaders, title, theme }: DataTableType) {
   const [sortedDatas, setSortedDatas] = useState<Array<Array<string>>>([])
   const [displayedDatas, setDisplayedDatas] = useState<Array<Array<string>>>([])
   const [itemPerPage, setItemPerPage] = useState<number>(10)
@@ -240,7 +240,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
           className={styles['data-table']}
           style={styleVariables}
         >
-          {tableTitle && <h2 className={styles.title}>{tableTitle}</h2>}
+          {title && <h2 className={styles.title}>{title}</h2>}
 
           <div className={styles.tools}>
             <div className={styles.pagination}>
