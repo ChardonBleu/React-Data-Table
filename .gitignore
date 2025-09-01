@@ -24,6 +24,9 @@ dist-ssr
 *.sw?
 
 coco.sh
+
 *storybook.log
 storybook-static
-.storybook
+
+coverage
+coverage*

@@ -19,7 +19,7 @@ interface ThemeType {
 interface DataTableType {
   datas: Array<Array<string>>
   tableHeaders: Array<string>
-  tableTitle?: string
+  title?: string
   theme?: ThemeType
 }
 
@@ -43,7 +43,7 @@ const OPTIONS_VALUES = [10, 25, 50, 100]
  * @param {DataTableType} props - component props
  * @param {Array<Array<string>>} props.datas - array of table entries. Each entrie is an array
  * @param {Array<string>} props.tableHeaders - array of table head titles
- * @param {string} props.tableTitle - optional - table title
+ * @param {string} props.title - optional - table title
  * @param {ThemeType} props.theme - optional - css theme with colors
  * @param {string} props.theme.primaryColor - text and borders color
  * @param {string} props.theme.backgroundColor - background for alternates rows and page buttons
@@ -67,7 +67,7 @@ const OPTIONS_VALUES = [10, 25, 50, 100]
  *
  * ```
  */
-export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableType) {
+export function DataTable({ datas, tableHeaders, title, theme }: DataTableType) {
   const [sortedDatas, setSortedDatas] = useState<Array<Array<string>>>([])
   const [displayedDatas, setDisplayedDatas] = useState<Array<Array<string>>>([])
   const [itemPerPage, setItemPerPage] = useState<number>(10)
@@ -137,14 +137,14 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
     if (tableHeaders[index].toLowerCase().includes('date')) {
       const sorted = [...sortedDatas].sort((a, b) => {
         return isSorted[index]
-          ? new Date(a[index]).getTime() - new Date(b[index]).getTime()
-          : new Date(b[index]).getTime() - new Date(a[index]).getTime()
+          ? new Date(b[index]).getTime() - new Date(a[index]).getTime()
+          : new Date(a[index]).getTime() - new Date(b[index]).getTime()
       })
       setSortedDatas(sorted)
       setDisplayedDatas(sorted.slice((activePage - 1) * itemPerPage, itemPerPage * activePage))
     } else {
       const sorted = [...sortedDatas].sort(function (a, b) {
-        return isSorted[index] ? a[index].localeCompare(b[index]) : b[index].localeCompare(a[index])
+        return isSorted[index] ? b[index].localeCompare(a[index]) : a[index].localeCompare(b[index])
       })
       setSortedDatas(sorted)
       setDisplayedDatas(sorted.slice((activePage - 1) * itemPerPage, itemPerPage * activePage))
@@ -190,7 +190,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
    * @param {MouseEvent<HTMLDivElement>} event
    */
   function handleSelect(event: MouseEvent<HTMLDivElement>) {
-    const optionValue = event.currentTarget.innerText
+    const optionValue = event.currentTarget.getAttribute('data-value')
     setItemPerPage(Number(optionValue))
     setShowOptions(false)
   }
@@ -200,8 +200,8 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
    * @param event
    */
   function handleChangePage(event: MouseEvent<HTMLButtonElement>) {
-    const currentPageButton = event.currentTarget
-    setActivePage(Number(currentPageButton.innerText))
+    const currentPageButton = event.currentTarget.innerHTML
+    setActivePage(Number(currentPageButton))
   }
 
   /**
@@ -229,9 +229,11 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
     }
   }
 
-  if (!datas || !tableHeaders) {
-    return <div>Données maquantes</div>
-  } else if (!datas.map((entries) => entries.length).every((x) => x === tableHeaders.length)) {
+  if (
+    !datas ||
+    !tableHeaders ||
+    !datas.map((entries) => entries.length).every((x) => x === tableHeaders.length)
+  ) {
     return <div>Données invalides</div>
   } else {
     return (
@@ -240,7 +242,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
           className={styles['data-table']}
           style={styleVariables}
         >
-          {tableTitle && <h2 className={styles.title}>{tableTitle}</h2>}
+          {title && <h2 className={styles.title}>{title}</h2>}
 
           <div className={styles.tools}>
             <div className={styles.pagination}>
@@ -250,8 +252,9 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                 <div
                   className={styles.value}
                   onClick={toggleOptions}
+                  data-testid='item-per-page-select'
                 >
-                  <p>{itemPerPage}</p>
+                  <p data-testid='item-per-page'>{itemPerPage}</p>
                   <FontAwesomeIcon
                     icon={faChevronDown}
                     className={styles.fa}
@@ -263,6 +266,8 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                       key={value}
                       className={styles.option}
                       onClick={(event) => handleSelect(event)}
+                      data-testid={'option' + value}
+                      data-value={value}
                     >
                       {value}
                     </div>
@@ -280,6 +285,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                 placeholder='filter'
                 name='filter'
                 onChange={() => handleFilter()}
+                data-testid='input-filter'
               />
             </div>
           </div>
@@ -294,6 +300,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                       icon={faSort}
                       className={styles.fa}
                       onClick={() => handleSort(index)}
+                      data-testid={'sort' + index}
                     />
                   </th>
                 ))}
@@ -325,12 +332,14 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                 className={styles.fa}
                 onClick={() => setActivePage(1)}
                 title='First'
+                data-testid='firstPageButton'
               />
               <FontAwesomeIcon
                 icon={faBackwardStep}
                 className={styles.fa}
                 onClick={handlePreviousPage}
                 title='Previous'
+                data-testid='previousPageButton'
               />
               {PagesButtons.map((num) => (
                 <button
@@ -340,6 +349,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                     [styles['page-button__active']]: activePage === num,
                   })}
                   onClick={handleChangePage}
+                  data-testid='page-button'
                 >
                   {num}
                 </button>
@@ -349,6 +359,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                 className={styles.fa}
                 onClick={handleNextPage}
                 title='Next'
+                data-testid='nextPageButton'
               />
               <FontAwesomeIcon
                 icon={faForwardFast}
@@ -361,6 +372,7 @@ export function DataTable({ datas, tableHeaders, tableTitle, theme }: DataTableT
                   )
                 }
                 title='Last'
+                data-testid='lastPageButton'
               />
             </div>
           </div>
