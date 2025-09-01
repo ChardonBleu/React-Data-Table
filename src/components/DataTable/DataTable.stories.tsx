@@ -13,7 +13,7 @@ const meta = {
       description: 'Thème personnalisé pour le tableau',
       control: 'object',
     },
-    tableTitle: {
+    title: {
       description: 'Titre optionnel du tableau',
       control: 'text',
     },
@@ -59,7 +59,7 @@ export const WithTitle: Story = {
   args: {
     datas: sampleData.slice(0, 6),
     tableHeaders: headers,
-    tableTitle: 'Employee Directory',
+    title: 'Employee Directory',
   },
 }
 
@@ -67,7 +67,7 @@ export const WithPersonnalTheme: Story = {
   args: {
     datas: sampleData,
     tableHeaders: headers,
-    tableTitle: 'Custom Themed Table',
+    title: 'Custom Themed Table',
     theme: {
       primaryColor: '#1b1a1af8',
       backgroundColor: '#e0d6c7ff',
@@ -80,7 +80,7 @@ export const LargeDataset: Story = {
   args: {
     datas: sampleData,
     tableHeaders: headers,
-    tableTitle: 'Large Dataset Example',
+    title: 'Large Dataset Example',
   },
 }
 
