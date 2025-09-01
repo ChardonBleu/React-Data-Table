@@ -33,24 +33,24 @@ const OPTIONS_VALUES = [10, 25, 50, 100]
 
 /**
  * # React-Data-Table component
- * ### Généric table for data array.
- * Entries length must all be the same,
- * and tableHeaders length must be equal to entries length.
- * User can:
- *    -filter entries,
- *    -sort entries by each table column
- *    -schoose number of entries per pages
- * @param {DataTableType} props - component props
- * @param {Array<Array<string>>} props.datas - array of table entries. Each entrie is an array
- * @param {Array<string>} props.tableHeaders - array of table head titles
- * @param {string} props.title - optional - table title
- * @param {ThemeType} props.theme - optional - css theme with colors
- * @param {string} props.theme.primaryColor - text and borders color
- * @param {string} props.theme.backgroundColor - background for alternates rows and page buttons
- * @param {string} props.theme.accentColor - active buttons and underline
- * @retrun {ReactElement}
+ * ### Généric table for data array.  
+ * Entries length must all be the same,  
+ * and tableHeaders length must be equal to entries length.  
+ * User can:   
+ *    -filter entries,  
+ *    -sort entries by each table column  
+ *    -schoose number of entries per pages  
+ * @param {DataTableType} props - component props  
+ * @param {Array<Array<string>>} props.datas - array of table entries. Each entrie is an array  
+ * @param {Array<string>} props.tableHeaders - array of table head titles  
+ * @param {string} props.title - optional - table title  
+ * @param {ThemeType} props.theme - optional - css theme with colors  
+ * @param {string} props.theme.primaryColor - text and borders color  
+ * @param {string} props.theme.backgroundColor - background for alternates rows and page buttons  
+ * @param {string} props.theme.accentColor - active buttons and underline  
+ * @retrun {ReactElement}  
  *
- * ### Usage
+ * ### Usage  
  *
  * ```jsx
  *
