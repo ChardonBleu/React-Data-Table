@@ -51,7 +51,7 @@ export default defineConfig({
     css: true,
     coverage: {
       provider: 'v8',
-      reporter: ['text-summary', 'html'],
+      reporter: ['text-summary', 'html', 'lcov'],
       enabled: true,
       include: ['src/components/DataTable/index.tsx'],
       thresholds: {
