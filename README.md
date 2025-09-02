@@ -34,7 +34,7 @@ Entries length must all be the same,
 
   ### Rendering with personnal theme
 
-  ![HRNet](src/public/DataTableExample.png)
+  ![HRNet](https://github.com/ChardonBleu/React-Data-Table/blob/main/src/public/DataTableExample.png)
 
 ## Development:
 
