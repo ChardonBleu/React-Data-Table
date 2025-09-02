@@ -15,6 +15,7 @@
     "typescript"
   ],
   "module": "./dist/main.js",
+  "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "author": "Fabienne Rondi",
   "license": "MIT",
