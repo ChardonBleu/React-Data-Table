@@ -130,3 +130,5 @@ Local: http://localhost:6006/
 On your network:  http://192.168.1.35:6006/   
 
 
+## Licence  
+MIT © Ton Nom

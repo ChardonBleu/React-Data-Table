@@ -5,9 +5,17 @@
   "files": [
     "dist"
   ],
+  "keywords": ["react", "table", "filtering", "sorting", "pagination", "javascript", "typescript"],
   "exports": "./dist/main.js",
   "module": "./dist/main.js",
   "types": "./dist/main.d.ts",
+  "author": "Fabienne Rondi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChardonBleu/React-Data-Table"
+  },
+  "homepage": "https://github.com/ChardonBleu/React-Data-Table#readme",
   "scripts": {
     "build": "tsc -b && vite build",
     "prepublishOnly": "vitest run && npm run build",
