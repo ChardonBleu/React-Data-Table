@@ -1,10 +1,42 @@
 # React-Data-Table
 React component: data table with pagination, filtering and sorting
 
+## Component usage:
+
+   ### Installation:
+   ```bash
+   npm i @chardonbleu/react-data-table
+   ```
+   ### Usage 
+
+Entries length must all be the same,  
+ and tableHeaders length must be equal to entries length.  
+ User can:   
+    -filter entries,  
+    -sort entries by each table column  
+    -schoose number of entries per pages  
+ 
+   
+  ```jsx
+ 
+  const employeeList = [["Marianne", "Durand"], ["Jean", "Dupont"]]
+  const headersList = ["First Name", "Last Name"]
+  const theme = {primaryColor: '#000000', backgroundColor: '#bfcedd', accentColor: '#3c56e7'}
+ 
+  <DataTable
+     datas={employeesList}
+     tableHeaders={headersList}
+     title="Table title"
+     theme={theme}
+  />
+ 
+  ```
+
+  ### Rendering with personnal theme
+
+  ![HRNet](src/public/DataTableExample.png)
 
 ## Development:
-
-### Installation
 
 You can clone the whole project by doing:
 
@@ -26,7 +58,6 @@ npm install
 │ ├── min.ts
 │ ├── preview.ts
 ├── src
-│ ├── App.jsx
 │ ├── components
 │ │ ├── DataTable
 │ │ │ ├── DataTable.stories.tsx
@@ -98,38 +129,4 @@ npm run storybook
 Local: http://localhost:6006/  
 On your network:  http://192.168.1.35:6006/   
 
-## Production:
 
-```bash
-npm run build
-```
-
-## Component usage:
-
-Entries length must all be the same,  
- and tableHeaders length must be equal to entries length.  
- User can:   
-    -filter entries,  
-    -sort entries by each table column  
-    -schoose number of entries per pages  
- 
-  ### Usage  
- 
-  ```jsx
- 
-  const employeeList = [["Marianne", "Durand"], ["Jean", "Dupont"]]
-  const headersList = ["First Name", "Last Name"]
-  const theme = {primaryColor: '#000000', backgroundColor: '#bfcedd', accentColor: '#3c56e7'}
- 
-  <DataTable
-     datas={employeesList}
-     tableHeaders={headersList}
-     title="Table title"
-     theme={theme}
-  />
- 
-  ```
-
-  ### Rendering with personnal theme
-
-  ![HRNet](src/stories/assets/DataTableExample.png)
