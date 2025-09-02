@@ -39,7 +39,9 @@
     "lfs": "eslint . --ext ts,tsx --fix && prettier --check . && stylelint 'src/**/*.{css,scss,sass}' --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest --ui --coverage"
+    "test": "vitest run",
+    "test:ui": "vitest --ui --coverage",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
