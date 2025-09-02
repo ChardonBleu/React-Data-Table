@@ -1,6 +1,10 @@
 # React-Data-Table
 React component: data table with pagination, filtering and sorting
 
+![npm](https://img.shields.io/npm/v/@chardonbleu/react-data-table)
+![Tests](https://github.com/votre-username/votre-repo/workflows/CI/badge.svg)
+![Coverage](https://img.shields.io/codecov/c/github/votre-username/votre-repo)
+![License](https://img.shields.io/npm/l/@chardonbleu/react-data-table)
 ## Component usage:
 
    ### Installation:
