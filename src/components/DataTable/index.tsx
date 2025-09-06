@@ -33,7 +33,7 @@ const OPTIONS_VALUES = [10, 25, 50, 100]
 
 /**
  * # React-Data-Table component
- * ### Généric table for data array.  
+ * ### Generic table for data array.  
  * Entries length must all be the same,  
  * and tableHeaders length must be equal to entries length.  
  * User can:   
